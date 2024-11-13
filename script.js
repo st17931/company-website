@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         subject.value = "";
                         message.value = "";
                         contact.value = "";
+                        alert("Thanks for filling out the form, We will get back to you as soon as possible")
                     })
                     .catch(error => {
                         console.error('Error sending email:', error);
