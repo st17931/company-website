@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Softet Solutions</title>
     <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
+    
 </head>
 <body>
 
@@ -31,6 +31,9 @@
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
 
+            <label for="number">Contact No:</label>
+            <input type="text" id="number" name="number" required>
+
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
 
@@ -48,5 +51,19 @@
     <footer>
         <p>&copy; 2024 Softet Solutions. All rights reserved.</p>
     </footer>
+
+
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init({
+                publicKey: "zDSlxJlyyeswlEOwG",
+            });
+        })();
+    </script>
+    <script  src="script.js"></script>
 </body>
 </html>
