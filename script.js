@@ -1,49 +1,50 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const contactForm = document.getElementById("contact-form");
+let li = document.getElementsByClassName('loginOrUserName')[0];
 
-    if (contactForm) {
-        contactForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const name = document.getElementById("name");
-            const email = document.getElementById("email");
-            const subject = document.getElementById("subject");
-            const message = document.getElementById("message");
-            const contact = document.getElementById("number");
+window.addEventListener("load", () => {
+    console.log("hi form domContentLoaded")
+    let url = "http://localhost:5000/teacher/getDetail"
+    if(localStorage.getItem('softetUserDetail')){
 
-            if (name.value.trim() === "" || email.value.trim() === "" || subject.value.trim() === "" || message.value.trim() === "" || contact.value.trim() === "") {
-                alert("Please fill out all fields.");
-            } else {
+        console.log("Inside if",localStorage.getItem('softetSolutions'))
 
-
-
-                const serviceID = "service_uf0h6k4"; // Replace with your service ID
-                const templateID = "template_jpbourm"; // Replace with your template ID
-
-                emailjs.send(serviceID, templateID, {
-                    to_name: 'Softnet Solutions',
-                    from_name: name.value.trim(),
-                    message: `Subject:-${subject.value.trim()} Message:-${message.value.trim()} Phone No:-${contact.value.trim()} Email ID:-${email.value.trim()}`,
-                    //to_email: 'recipient@example.com', // Add more parameters if needed
+        fetch(url, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${localStorage.getItem('softetUserDetail')}` 
+            },
+            method: "GET"
+        }).then((data)=> data.json())
+        .then((data)=> {
+            console.log("data from api is", data);
+            if(data.error == "Invalid token"){      
+                li.textContent = "Log In";
+                localStorage.removeItem("softetUserDetail")
+            }else{
+                li.innerHTML = `<select name="userProfile" id="userProfile">
+                 <option  value="userDashboard" > ${data.name}</option>
+                 <option  value="userDashboard" > Dashboard</option>
+                  <option value="userLogout"> LogOut</option>
+                </select>
+                `;
+                li.style.userSelect = "none"
+                document.getElementById("userProfile").addEventListener('change', (e)=>{
+                    if(e.target.value == "userDashboard"){
+                        location.href = './dashBoard/dashBoard.html'
+                    }if(e.target.value == "userLogout"){
+                        localStorage.removeItem('softetUserDetail');
+                        window.location.reload();
+                    }
+                    console.log("target is",e.target.value)
                 })
-                    .then(response => {
-                        console.log('Email sent successfully!', response.status, response.text);
-                        name.value = "";
-                        email.value = "";
-                        subject.value = "";
-                        message.value = "";
-                        contact.value = "";
-                        alert("Thanks for filling out the form, We will get back to you as soon as possible")
-                    })
-                    .catch(error => {
-                        console.error('Error sending email:', error);
-                    });
-
-
-
             }
+
         });
     }
+    console.log("By form domContentLoaded")  
+    
+   
 });
+
 
 function toggleMenu() {
     const navLinks = document.querySelector('.nav-links');
@@ -54,3 +55,6 @@ function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
 }
+
+
+
